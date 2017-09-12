@@ -16,13 +16,42 @@ Page({
             title: "[江苏卫视]目前人工智能模式与其资本价值不符",
         },
         didSkipReaded: true,
-        isplaying:false
+        isplaying: false,
+        userInfo: {},
+        hasUserInfo: false,
+        canIUse: wx.canIUse('button.open-type.getUserInfo')
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        if (app.globalData.userInfo) {
+            this.setData({
+                userInfo: app.globalData.userInfo,
+                hasUserInfo: true
+            })
+        } else if (this.data.canIUse) {
+            // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+            // 所以此处加入 callback 以防止这种情况
+            app.userInfoReadyCallback = res => {
+                this.setData({
+                    userInfo: res.userInfo,
+                    hasUserInfo: true
+                })
+            }
+        } else {
+            // 在没有 open-type=getUserInfo 版本的兼容处理
+            wx.getUserInfo({
+                success: res => {
+                    app.globalData.userInfo = res.userInfo
+                    this.setData({
+                        userInfo: res.userInfo,
+                        hasUserInfo: true
+                    })
+                }
+            })
+        }
 
         audioInfos.fetchAudioInfos(1, 0, (infos) => {
             app.globalData.audioInfos = infos
@@ -40,44 +69,51 @@ Page({
                         mp3.title = audioinfo.title
                         mp3.image = "http://image.leting.io/" + audioinfo.image
                         mp3.src = "http://audio.leting.io/" + audioinfo.audio
+                        mp3.catalog_name = audioinfo.catalog_name
                         mp3list.push(mp3)
                     }
                     backgroundAudioManager.setMp3List(mp3list)
                     backgroundAudioManager.onAudioState()
-                    backgroundAudioManager.setMonitorPlayState((state) =>{
-                        this.setData({isplaying:state})
+                    backgroundAudioManager.setMonitorPlayState((state) => {
+                        this.setData({ isplaying: state })
                     })
-                    //backgroundAudioManager.audioPlay(true)
+                    backgroundAudioManager.setAudioSourceChangedCallback((audioInfo) => {
+                        this.setData({ audioInfo: audioInfo })
+                    })
                 }
             }
         })
     },
 
-    tuodong: function (e) {
-        var newwz = e.detail.value;
-        var duration =this.data.duration;
-        var position = newwz*duration/100;
-        const backgroundAudioManager = wx.getBackgroundAudioManager()
-
-        backgroundAudioManager.seek(position)
-        console.log(position);
-
-
+    //事件处理函数
+    bindViewTap: function () {
+        wx.navigateTo({
+            url: '../logs/logs'
+        })
     },
 
-    play:function(e) {
-        if (this.data.isplaying ) {
+    getUserInfo: function (e) {
+        console.log(e)
+        app.globalData.userInfo = e.detail.userInfo
+        this.setData({
+            userInfo: e.detail.userInfo,
+            hasUserInfo: true
+        })
+    },
+
+    play: function (e) {
+        if (this.data.isplaying) {
             backgroundAudioManager.audioPause()
         } else {
             backgroundAudioManager.audioPlay(this.data.didSkipReaded)
         }
     },
 
-    playNextAudio:function(e) {
+    playNextAudio: function (e) {
         backgroundAudioManager.nextOne(this.data.didSkipReaded)
     },
 
-    playPreAudio:function(e) {
+    playPreAudio: function (e) {
         backgroundAudioManager.prevOne(this.data.didSkipReaded)
     },
 

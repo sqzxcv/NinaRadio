@@ -1,7 +1,8 @@
 var playing = false
 var playList = {}
 var playIndex = 0;
-var _changePlayStateCallback = null
+var _changePlayStateCallback = null;
+var _audioSourceChangedCallback = null;
 
 const setMp3List = (mp3List) => {
     console.log("getlist...")
@@ -18,6 +19,10 @@ const audioPlay = (didSkipReaded) => {
 
 const setMonitorPlayState = (changePlayStateCallback) => {
     _changePlayStateCallback = changePlayStateCallback
+}
+
+const setAudioSourceChangedCallback = (audioSourceChangedCallback) => {
+    _audioSourceChangedCallback = audioSourceChangedCallback
 }
 
 const changePlayState =(state) =>{
@@ -43,14 +48,18 @@ const backPlay = (didSkipReaded) => {
     wx.showLoading({
         title: '正在努力准备..',
     })
+
     var audioinfo = playList[playIndex]
     const backgroundAudioManager = wx.getBackgroundAudioManager()
     backgroundAudioManager.title = audioinfo.title
     // backgroundAudioManager.epname = ""
-    // backgroundAudioManager.singer = that.data.singer
+    backgroundAudioManager.singer = audioinfo.catalog_name
     backgroundAudioManager.coverImgUrl = audioinfo.image
     backgroundAudioManager.src = audioinfo.src
     changePlayState(true);
+    if (_audioSourceChangedCallback) {
+        _audioSourceChangedCallback(audioinfo)
+    }
 }
 
 const nextOne = (didSkipReaded) => {
@@ -108,9 +117,9 @@ const onAudioState = () => {
         wx.hideLoading();
         console.log("可以播放了。");
     });
-    backgroundAudioManager.onTimeUpdate(function() {
+    // backgroundAudioManager.onTimeUpdate(function() {
 
-    })
+    // })
 }
 
 const formatTime = (seconds) => {
@@ -140,5 +149,6 @@ module.exports = {
     prevOne:prevOne,
     onAudioState:onAudioState,
     setMonitorPlayState,
-    manager:wx.getBackgroundAudioManager()
+    manager:wx.getBackgroundAudioManager(),
+    setAudioSourceChangedCallback
 }
