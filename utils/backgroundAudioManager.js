@@ -14,7 +14,11 @@ const audioPlay = (didSkipReaded) => {
     const backgroundAudioManager = wx.getBackgroundAudioManager()
     backgroundAudioManager.play()
     changePlayState(true)
-    backPlay(didSkipReaded)
+    if (didSkipReaded) {
+        playNextUnreadAudio(-1)
+    } else {
+        backPlay(didSkipReaded)
+    }
 }
 
 const setMonitorPlayState = (changePlayStateCallback) => {
@@ -25,7 +29,7 @@ const setAudioSourceChangedCallback = (audioSourceChangedCallback) => {
     _audioSourceChangedCallback = audioSourceChangedCallback
 }
 
-const changePlayState =(state) =>{
+const changePlayState = (state) => {
     playing = state
     if (_changePlayStateCallback != null) {
         _changePlayStateCallback(playing)
@@ -64,20 +68,62 @@ const backPlay = (didSkipReaded) => {
 
 const nextOne = (didSkipReaded) => {
 
-    playIndex = playIndex + 1;
-    console.log("next one。。");
-    console.log("playIndex:" + playIndex)
-    //todo: 设置下一首音频
-    backPlay(`didSkipReaded`);
+    if (didSkipReaded) {
+        playNextUnreadAudio(playIndex)
+    } else {
+        console.log("next one。。");
+        console.log("playIndex:" + playIndex)
+        backPlay(didSkipReaded);
+    }
 }
+
+const playNextUnreadAudio = (startIndex) => {
+    
+        //自动跳过已经播放的新闻
+        playIndex = startIndex
+        while (1) {
+            playIndex = playIndex + 1;
+            if (playIndex < playList.length - 3) {
+                //todo:当播放到倒数第三首时,开始请求最新数据.
+            }
+            if (playIndex < playList.length) {
+                if (didPlayedAudio(playList[playIndex].audioid) == false) {
+                    break
+                }
+            } else {
+                playIndex = playList.length - 1
+                console.log("所有消息都已播放")
+                wx.showToast({
+                    title: '所有消息都已播放,请拉去最新内容',
+                    icon: 'loading',
+                    duration: 2000
+                })
+                break
+            }
+        }
+        console.log("next one。。");
+        console.log("playIndex:" + playIndex)
+        backPlay(true);
+    }
 
 const prevOne = (didSkipReaded) => {
 
+    // 返回上一首,则清楚当前音频的播放记录
+    deleteFromStorageWithAudioId(playList[playIndex].audioid)
     playIndex = playIndex - 1;
-    console.log("prev one。。");
-    console.log("playIndex:" + playIndex)
-    //todo: 设置下一首音频
-    backPlay(didSkipReaded);
+    if (playIndex >= 0) {
+        console.log("prev one。。");
+        console.log("playIndex:" + playIndex)
+        backPlay(didSkipReaded);
+    } else {
+        playIndex = 0;
+        console.log("返回到第一首")
+        wx.showToast({
+            title: '已经是第一首',
+            icon: 'loading',
+            duration: 2000
+        })
+    }
 }
 
 const onAudioState = () => {
@@ -90,6 +136,11 @@ const onAudioState = () => {
         // dingshiqi();
         wx.hideLoading();
         console.log("on play");
+        try {
+            recodPlayerId(playList[playIndex].audioid)
+        } catch (error) {
+            console.error(error)
+        }
     });
     wx.onBackgroundAudioPause(function () {
         // 当 wx.pauseBackgroundAudio() 执行时触发
@@ -141,14 +192,50 @@ const formatTime = (seconds) => {
     return time = hour ? (hour + ':' + newMin + ':' + second) : (min + ':' + second);
 }
 
+const recodPlayerId = (audioid) => {
+    try {
+        var localRecord = wx.getStorageSync("localplayed_record") || {}
+        localRecord[audioid] = new Date().getTime();
+        wx.setStorageSync('localplayed_record', localRecord)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const deleteFromStorageWithAudioId = (audioid) => {
+    try {
+        var localRecord = wx.getStorageSync("localplayed_record")
+        // localRecord = JSON.parse(localRecord)
+        delete localRecord[audioid]
+        wx.setStorageSync('localplayed_record', localRecord)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const didPlayedAudio = (audioid) => {
+    try {
+        var localRecord = wx.getStorageSync("localplayed_record") || {}
+        if (localRecord) {
+            // localRecord = JSON.parse(localRecord)
+            if (localRecord[audioid] > 0) {
+                return true
+            }
+        }
+    } catch (error) {
+        console.error(error)
+    }
+    return false
+}
+
 module.exports = {
-    setMp3List:setMp3List,
-    audioPlay:audioPlay,
-    audioPause:audioPause,
-    nextOne:nextOne,
-    prevOne:prevOne,
-    onAudioState:onAudioState,
+    setMp3List: setMp3List,
+    audioPlay: audioPlay,
+    audioPause: audioPause,
+    nextOne: nextOne,
+    prevOne: prevOne,
+    onAudioState: onAudioState,
     setMonitorPlayState,
-    manager:wx.getBackgroundAudioManager(),
+    manager: wx.getBackgroundAudioManager(),
     setAudioSourceChangedCallback
 }

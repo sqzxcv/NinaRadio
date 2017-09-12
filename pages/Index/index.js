@@ -70,6 +70,7 @@ Page({
                         mp3.image = "http://image.leting.io/" + audioinfo.image
                         mp3.src = "http://audio.leting.io/" + audioinfo.audio
                         mp3.catalog_name = audioinfo.catalog_name
+                        mp3.audioid = audioinfo.doc_id
                         mp3list.push(mp3)
                     }
                     backgroundAudioManager.setMp3List(mp3list)
@@ -114,7 +115,7 @@ Page({
     },
 
     playPreAudio: function (e) {
-        backgroundAudioManager.prevOne(this.data.didSkipReaded)
+        backgroundAudioManager.prevOne(false)
     },
 
     /**
