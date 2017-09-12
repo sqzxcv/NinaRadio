@@ -108,6 +108,9 @@ const onAudioState = () => {
         wx.hideLoading();
         console.log("可以播放了。");
     });
+    backgroundAudioManager.onTimeUpdate(function() {
+
+    })
 }
 
 const formatTime = (seconds) => {
@@ -136,5 +139,6 @@ module.exports = {
     nextOne:nextOne,
     prevOne:prevOne,
     onAudioState:onAudioState,
-    setMonitorPlayState
+    setMonitorPlayState,
+    manager:wx.getBackgroundAudioManager()
 }

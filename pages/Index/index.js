@@ -54,13 +54,13 @@ Page({
     },
 
     tuodong: function (e) {
-        // var newwz = e.detail.value;
-        // var duration =this.data.duration;
-        // var position = newwz*duration/100;
-        // const backgroundAudioManager = wx.getBackgroundAudioManager()
+        var newwz = e.detail.value;
+        var duration =this.data.duration;
+        var position = newwz*duration/100;
+        const backgroundAudioManager = wx.getBackgroundAudioManager()
 
-        // backgroundAudioManager.seek(position)
-        // console.log(position);
+        backgroundAudioManager.seek(position)
+        console.log(position);
 
 
     },
