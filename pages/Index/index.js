@@ -53,43 +53,105 @@ Page({
             })
         }
 
-        audioInfos.fetchAudioInfos(1, 0, (infos) => {
-            app.globalData.audioInfos = infos
-            var audioInfo = audioInfos.findNextAudio(-1, app.globalData.audioInfos, true)
-            if (audioInfo) {
-                this.setData({
-                    audioInfo: audioInfo
-                })
-
-                if (wx.canIUse('getBackgroundAudioManager')) {
-                    var mp3list = []
-                    for (var index = 0; index < app.globalData.audioInfos.length; index++) {
-                        var audioinfo = app.globalData.audioInfos[index];
-                        var mp3 = {}
-                        mp3.title = audioinfo.title
-                        mp3.image = "http://image.leting.io/" + audioinfo.image
-                        mp3.src = "http://audio.leting.io/" + audioinfo.audio
-                        mp3.catalog_name = audioinfo.catalog_name
-                        mp3.audioid = audioinfo.doc_id
-                        mp3list.push(mp3)
-                    }
-                    backgroundAudioManager.setMp3List(mp3list)
-                    backgroundAudioManager.onAudioState()
-                    backgroundAudioManager.setMonitorPlayState((state) => {
-                        this.setData({ isplaying: state })
-                    })
-                    backgroundAudioManager.setAudioSourceChangedCallback((audioInfo) => {
-                        this.setData({ audioInfo: audioInfo })
-                    })
-                }
-            }
-        })
+        this.reloadNewestAudios(this)
     },
 
     //事件处理函数
     bindViewTap: function () {
         wx.navigateTo({
             url: '../logs/logs'
+        })
+    },
+
+    /**
+     * 重新加载最新消息
+     */
+    reloadNewestAudios: (obj) => {
+        const that = obj
+        wx.showLoading({
+            title: '更新最新消息...',
+        })
+        audioInfos.fetchMoreAudios(1, 0, (infos) => {
+            if (infos != null) {
+                if (infos.length <= 0) {
+                    console.log("没有更多消息")
+                    wx.hideLoading();
+                    wx.showToast({
+                        title: '太棒了,无所不知,无所不能的你已经阅完所有消息了',
+                        icon: 'loading',
+                        duration: 2000
+                    })
+                    return
+                }
+                that.setData({
+                    audioInfo: infos[0]
+                })
+                if (wx.canIUse('getBackgroundAudioManager')) {
+                    backgroundAudioManager.setMp3List(infos)
+                    backgroundAudioManager.onAudioState()
+                    backgroundAudioManager.setMonitorPlayState((state) => {
+                        that.setData({
+                            isplaying: state
+                        })
+                    })
+                    backgroundAudioManager.setAudioSourceChangedCallback((audioInfo) => {
+                        that.setData({
+                            audioInfo: audioInfo
+                        })
+                    })
+                    backgroundAudioManager.setNeedMoreSourceDelegate((maxid, didupdatedcallback) => {
+                        that.loadMoreAudios(maxid, didupdatedcallback);
+                    })
+                }
+                wx.hideLoading();
+            } else {
+                console.error("加载最新消息失败")
+                wx.hideLoading();
+                wx.showToast({
+                    title: '道路太拥堵,消息更新失败了',
+                    icon: 'loading',
+                    duration: 2000
+                })
+            }
+        })
+    },
+
+
+    /**
+     * 加载更多消息
+     */
+    loadMoreAudios: (maxid, didupdatedcallback) => {
+
+        if (app.globalData.fetchdataing == true) {
+            didupdatedcallback([])
+            return
+        }
+        wx.showLoading({
+            title: '更新最多消息...',
+        })
+        audioInfos.fetchMoreAudios(1, maxid, (infos) => {
+            if (infos != null) {
+                if (infos.length <= 0) {
+                    console.log("没有更多消息")
+                    wx.hideLoading();
+                    wx.showToast({
+                        title: '太棒了,无所不知,无所不能的你已经阅完所有消息了',
+                        icon: 'loading',
+                        duration: 2000
+                    })
+                    return
+                }
+                didupdatedcallback(infos)
+                wx.hideLoading();
+            } else {
+                console.error("加载最新消息失败")
+                wx.hideLoading();
+                wx.showToast({
+                    title: '道路太拥堵,消息更新失败了',
+                    icon: 'loading',
+                    duration: 2000
+                })
+            }
         })
     },
 

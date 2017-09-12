@@ -3,6 +3,13 @@ var playList = {}
 var playIndex = 0;
 var _changePlayStateCallback = null;
 var _audioSourceChangedCallback = null;
+/**
+ * _needMoreSourceDelegate(maxid, didupdatedcallback) 保护两个参数：
+ * maxid: playlist列表中最后一个音频的audioid
+ * didupdatedcallback(newMp3list) 在数据更新成功后的回调函数，该回调函数包含一个参数
+ * newMp3list:更新的音频列表，newMp3list加到playlist最后
+ */
+var _needMoreSourceDelegate = null
 
 const setMp3List = (mp3List) => {
     console.log("getlist...")
@@ -46,7 +53,11 @@ const audioPause = () => {
 const backPlay = (didSkipReaded) => {
     if (playIndex >= playList.length) {
         console.error("playIndex 超出了playList,需要加载新数据")
-        //todo 加载更多数据
+        if (_needMoreSourceDelegate) {
+            _needMoreSourceDelegate(playList[playList.length-1].audioid, (newMp3list) => {
+                playList = playList.concat(newMp3list)
+            });
+        }
         return
     }
     wx.showLoading({
@@ -83,8 +94,12 @@ const playNextUnreadAudio = (startIndex) => {
         playIndex = startIndex
         while (1) {
             playIndex = playIndex + 1;
-            if (playIndex < playList.length - 3) {
-                //todo:当播放到倒数第三首时,开始请求最新数据.
+            if (playIndex > playList.length - 3) {
+                if (_needMoreSourceDelegate) {
+                    _needMoreSourceDelegate(playList[playList.length-1].audioid, (newMp3list) => {
+                        playList = playList.concat(newMp3list)
+                    });
+                }
             }
             if (playIndex < playList.length) {
                 if (didPlayedAudio(playList[playIndex].audioid) == false) {
@@ -228,6 +243,10 @@ const didPlayedAudio = (audioid) => {
     return false
 }
 
+const setNeedMoreSourceDelegate =(needMoreSourceDelegate) => {
+    _needMoreSourceDelegate = needMoreSourceDelegate
+}
+
 module.exports = {
     setMp3List: setMp3List,
     audioPlay: audioPlay,
@@ -237,5 +256,6 @@ module.exports = {
     onAudioState: onAudioState,
     setMonitorPlayState,
     manager: wx.getBackgroundAudioManager(),
-    setAudioSourceChangedCallback
+    setAudioSourceChangedCallback:setAudioSourceChangedCallback,
+    setNeedMoreSourceDelegate:setNeedMoreSourceDelegate
 }
