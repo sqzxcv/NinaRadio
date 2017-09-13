@@ -265,11 +265,11 @@ Page({
             backgroundAudioManager.audioPlay(this.data.didSkipReaded)
         }
     },
-    //todo
+
     playNextAudio: function (e) {
         backgroundAudioManager.nextOne(this.data.didSkipReaded)
     },
-    //todo
+
     playPreAudio: function (e) {
         backgroundAudioManager.prevOne(false)
     },
