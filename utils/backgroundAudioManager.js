@@ -171,13 +171,13 @@ const onAudioState = () => {
     });
     const backgroundAudioManager = wx.getBackgroundAudioManager()
     backgroundAudioManager.onPrev(function () {
-        prevOne();
+        prevOne(true);
     });
     backgroundAudioManager.onNext(function () {
-        nextOne();
+        nextOne(true);
     });
     backgroundAudioManager.onEnded(function () {
-        nextOne();
+        nextOne(true);
     });
     backgroundAudioManager.onCanplay(function () {
         wx.hideLoading();
