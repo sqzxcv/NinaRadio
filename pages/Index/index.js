@@ -12,15 +12,11 @@ Page({
      * 页面的初始数据
      */
     data: {
-        audioInfo: {
-            title: "[江苏卫视]目前人工智能模式与其资本价值不符",
-        },
         didSkipReaded: true,
-        isplaying: false,
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
-        catalogs:['red', 'yellow', 'blue', 'green', 'red']
+        catalogs:[]
     },
 
     /**
@@ -54,7 +50,83 @@ Page({
             })
         }
 
-        this.reloadNewestAudios(this)
+        this.reloadAllCatalogsAudios(this)
+    },
+
+        /**
+     * 重新加载所有目录
+     */
+    reloadAllCatalogsAudios: function(obj) {
+        const that = obj
+        wx.showLoading({
+            title: '更新最新消息...',
+        })
+        audioInfos.reloadAllCatalogsAudios((catalogs) => {
+            if (catalogs != null) {
+                if (catalogs.length <= 0) {
+                    console.log("没有更多消息")
+                    wx.hideLoading();
+                    wx.showToast({
+                        title: '太棒了,无所不知,无所不能的你已经阅完所有消息了',
+                        icon: 'loading',
+                        duration: 2000
+                    })
+                    return
+                }
+                var localCatalogs = that.data.catalogs
+                for (var index = 0; index < catalogs.length; index++) {
+                    var catalog = catalogs[index];
+                    var localCatalog = null
+                    for (var j = 0; j < localCatalogs.length; j++) {
+                        var element = localCatalogs[j];
+                        if (catalog.catalogid == element.catalogid) {
+                            localCatalog = element
+                            break
+                        }
+                    }
+                    catalogs[index].isplaying = false
+                    catalogs[index].audioInfo = catalog.results[0] 
+                }
+                that.setData({
+                    catalogs: catalogs
+                })
+
+                //todo
+                // var mp3list = []
+                // if (currentShowIndex >= this.data.catalogs.length) {
+                //     console.error("当前的页currentShowIndex已经超出catalogs长度")
+                // } else {
+                //     mp3list = catalogs[currentShowIndex].results
+                // }
+                // if (wx.canIUse('getBackgroundAudioManager')) {
+                //     backgroundAudioManager.setMp3List(mp3list)
+                //     backgroundAudioManager.onAudioState()
+                //     backgroundAudioManager.setMonitorPlayState((state) => {
+                        
+                //         that.setData({
+                //             isplaying: state
+                //         })
+                //     })
+                //     backgroundAudioManager.setAudioSourceChangedCallback((audioInfo) => {
+                //         that.setData({
+                //             audioInfo: audioInfo
+                //         })
+                //     })
+                //     backgroundAudioManager.setNeedMoreSourceDelegate((maxid, didupdatedcallback) => {
+                //         that.loadMoreAudios(maxid, didupdatedcallback);
+                //     })
+                // }
+                wx.hideLoading();
+            } else {
+                console.error("加载最新消息失败")
+                wx.hideLoading();
+                wx.showToast({
+                    title: '道路太拥堵,消息更新失败了',
+                    icon: 'loading',
+                    duration: 2000
+                })
+            }
+        })
     },
 
     //事件处理函数

@@ -34,6 +34,34 @@ const fetchMoreAudios = (catalogid, maxid, callback) => {
     // callback(JSON.parse(infos))
 }
 
+const reloadAllCatalogsAudios = (callback) => {
+    
+        app.globalData.fetchdataing = true
+        var url = "https://ting.lila-info.com/api/catalog_wx"
+        wx.request({
+            url:  url,
+            success:(res) => {
+                if (res.data.message="ok") {
+                    callback(res.data.catalogs)
+                } else {
+                    callback(null)
+                }
+            },
+            fail:(res) => {
+                callback(null)
+                try {
+                    console.error(res)
+                } catch (error) {
+                    console.error(error)
+                }
+            },
+            complete: () => {
+                app.globalData.fetchdataing = false
+            }
+        })
+    }
+
 module.exports = {
     fetchMoreAudios: fetchMoreAudios,
+    reloadAllCatalogsAudios:reloadAllCatalogsAudios
 }
