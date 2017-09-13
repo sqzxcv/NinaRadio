@@ -19,7 +19,8 @@ Page({
         isplaying: false,
         userInfo: {},
         hasUserInfo: false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
+        canIUse: wx.canIUse('button.open-type.getUserInfo'),
+        catalogs:['red', 'yellow', 'blue', 'green', 'red']
     },
 
     /**
@@ -66,7 +67,7 @@ Page({
     /**
      * 重新加载最新消息
      */
-    reloadNewestAudios: (obj) => {
+    reloadNewestAudios: function(obj) {
         const that = obj
         wx.showLoading({
             title: '更新最新消息...',
@@ -116,11 +117,10 @@ Page({
         })
     },
 
-
     /**
      * 加载更多消息
      */
-    loadMoreAudios: (maxid, didupdatedcallback) => {
+    loadMoreAudios: function(maxid, didupdatedcallback) {
 
         if (app.globalData.fetchdataing == true) {
             didupdatedcallback([])
