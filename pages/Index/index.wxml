@@ -1,8 +1,8 @@
 <!--pages/Index/index.wxml-->
 
-<swiper class="swiper_box" indicator-dots="true">
+<swiper class="swiper_box" indicator-dots="true" bindchange="catalogChanged" current="{{currentShowIndex}}">
     <block wx:for="{{catalogs}}">
-        <swiper-item  class="swiper_item">
+        <swiper-item class="swiper_item">
             <view class="container">
                 <view class="userinfo">
                     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
@@ -16,9 +16,9 @@
                     <text class="audioTitle">{{item.audioInfo.title}}</text>
                     <view class="control">
                         <image class="previous_icon" src="/images/previous_icon.png" bindtap='playPreAudio'></image>
-                        <view class='play_icon' bindtap="play">
-                            <image class="play_image" src='/images/play_icon.png' hidden="{{item.isplaying}}"></image>
-                            <image class="pause_image" src='/images/pause_icon.png' hidden="{{!item.isplaying}}"></image>
+                        <view class='play_icon' >
+                            <image class="play_image" bindtap="play" src='/images/play_icon.png' hidden="{{item.isplaying}}"  data-type="play"  data-index="{{index}}"></image>
+                            <image class="pause_image" bindtap="pause" src='/images/pause_icon.png' hidden="{{!item.isplaying}}"  data-type="pause"  data-index="{{index}}"></image>
                         </view>
                         <image class="next_icon" src="/images/next_icon.png" bindtap="playNextAudio"></image>
                     </view>

@@ -1,6 +1,6 @@
 var playing = false
 var playList = {}
-var playIndex = 0;
+var playIndex = -1;
 var _changePlayStateCallback = null;
 var _audioSourceChangedCallback = null;
 /**
@@ -12,20 +12,25 @@ var _audioSourceChangedCallback = null;
 var _needMoreSourceDelegate = null
 
 const setMp3List = (mp3List) => {
-    console.log("getlist...")
+    console.log("重新设置播放器播放源")
     playList = mp3List
+    playIndex = -1
 }
 
 const audioPlay = (didSkipReaded) => {
 
     const backgroundAudioManager = wx.getBackgroundAudioManager()
-    backgroundAudioManager.play()
-    changePlayState(true)
-    if (didSkipReaded) {
-        playNextUnreadAudio(-1)
+    if (backgroundAudioManager.paused == true && playIndex != -1) {
+        backgroundAudioManager.play()
     } else {
-        backPlay(didSkipReaded)
+        if (didSkipReaded) {
+            playNextUnreadAudio(-1)
+        } else {
+            backPlay(didSkipReaded)
+        }
     }
+    changePlayState(true)
+   
 }
 
 const setMonitorPlayState = (changePlayStateCallback) => {
