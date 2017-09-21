@@ -317,6 +317,9 @@ Page({
 
     catalogChanged: function (event) {
         this.data.currentShowIndex = event.detail.current;
+        wx.setNavigationBarTitle({
+            title: this.data.catalogs[event.detail.current].catalog_name
+          })
     },
 
     /**
