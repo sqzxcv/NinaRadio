@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/profile/profile",
     "pages/Index/index",
+    "pages/profile/profile",
     "pages/logs/logs"
   ],
   "window": {
@@ -9,28 +9,5 @@
     "navigationBarBackgroundColor": "#eee",
     "navigationBarTitleText": "畅听吧",
     "navigationBarTextStyle": "black"
-  },
-  "tabBar": {
-    "color":"#8a8a8a",
-    "selectedColor":"#0CBB08",
-    "backgroundColor":"#eee",
-    "list": [
-      {
-        "pagePath": "pages/profile/profile",
-        "iconPath": "/images/one.png",
-        "selectedIconPath": "/images/one2.png",
-        "text": "TTS"
-      },
-      {
-        "pagePath": "pages/Index/index",
-        "iconPath": "/images/any.png",
-        "selectedIconPath":"/images/any2.png",
-        "text": "我的监控室"
-      }
-    ]
-  },
-  "networkTimeout": {
-    "request": 1200000
-  },
-  "debug": true
+  }
 }

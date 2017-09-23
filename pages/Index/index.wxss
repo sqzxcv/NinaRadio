@@ -1,116 +1,131 @@
 /* pages/Index/index.wxss */
 
 page {
-    background-color: #eee;
-    font-family: PingFangSC-Thin, sans-serif;
+  background-color: #eee;
+  font-family: PingFangSC-Thin, sans-serif;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* justify-content: space-between; *//* padding: 200rpx 0; */
-    box-sizing: border-box;
-      margin-top: 10rpx;  
-    background-color: white;
-    width: 90%;
-    height: 950rpx;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 20rpx;
-    box-shadow: 0rpx 0rpx 2rpx 2rpx #e5e6e7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-between; *//* padding: 200rpx 0; */
+  box-sizing: border-box;
+  margin-top: 10rpx;
+  background-color: white;
+  width: 90%;
+  height: 950rpx;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 20rpx;
+  box-shadow: 0rpx 0rpx 2rpx 2rpx #e5e6e7;
 }
 
 .userinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 400rpx;
-    margin-top: 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 400rpx;
+  margin-top: 60rpx;
 }
 
 .userinfo-avatar {
-    width: 128rpx;
-    height: 128rpx;
-    margin: 20rpx;
-    border-radius: 50%;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
 }
 
 .userinfo-nickname {
-    color: #aaa;
+  color: #aaa;
 }
 
 .audioInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 30rpx;
-    margin-right: 20rpx;
-    margin-top: 100rpx;
-    top: 3000rpx;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 30rpx;
+  margin-right: 20rpx;
+  margin-top: 100rpx;
+  top: 3000rpx;
+  height: 100%;
 }
 
 .audioTitle {
-    font-size: 32rpx;
-    margin-top: 20rpx;
+  font-size: 32rpx;
+  margin-top: 20rpx;
 }
 
 .control {
-    display: flex;
-    flex-direction: row;
-    margin-top: 80rpx;
-    margin-bottom: 40rpx;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 80rpx;
+  margin-bottom: 40rpx;
+  align-items: center;
+  height: 100%;
 }
 
 .previous_icon {
-    width: 46rpx;
-    height: 47rpx;
-    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+  width: 46rpx;
+  height: 47rpx;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
 }
 
 .play_icon {
-    width: 200rpx;
-    height: 200rpx;
-    margin-left: 100rpx;
-    margin-right: 100rpx;
+  width: 200rpx;
+  height: 200rpx;
+  margin-left: 100rpx;
+  margin-right: 100rpx;
 }
 
 .play_image {
-    width: 100%;
-    height: 100%;
-    /* box-shadow: 0rpx 0rpx 2rpx 2rpx #e5e6e7; */
-    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+  width: 100%;
+  height: 100%;
+  /* box-shadow: 0rpx 0rpx 2rpx 2rpx #e5e6e7; */
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }
 
 .pause_image {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .next_icon {
-    width: 46rpx;
-    height: 47rpx;
-    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+  width: 46rpx;
+  height: 47rpx;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
 }
 
 .swiper_box {
-    position: absolute;
-    left: 0;
-    top: 0;
-    /* right: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* right: 0;
     bottom: 0; */
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .swiper_item {
-    /* position: absolute; */
-    /* left: 0;
+  /* position: absolute; *//* left: 0;
     top: 0;
     right: 0;
     bottom: 0; */
-     display: flex; 
+  display: flex;
+}
+
+.tips {
+  margin-left: auto;
+  margin-right: auto;
+   /* margin-bottom: 100rpx;  */
+   margin-top: 1000rpx; 
+   text-align: center;
+   /* filter: drop-shadow(-1px -1px -1px rgba(0, 0, 0, 0.3)); */
+   text-shadow: 0 1px 0 #ccc; 
+   font-size: 30rpx;
+   font-family:Courier New, Courier, monospace;
+   color: #555
 }

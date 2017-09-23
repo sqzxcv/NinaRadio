@@ -27,22 +27,22 @@ Page({
     onLoad: function (options) {
 
         // 登录
-        wx.login({
-            success: res => {
-                // 发送 res.code 到后台换取 openId, sessionKey, unionId
-            }
-        })
-        wx.getUserInfo({
-            success: res => {
-                // 可以将 res 发送给后台解码出 unionId
-                app.globalData.userInfo = res.userInfo
-                this.setData({
-                    userInfo: app.globalData.userInfo,
-                    hasUserInfo: true
-                })
+        // wx.login({
+        //     success: res => {
+        //         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        //     }
+        // })
+        // wx.getUserInfo({
+        //     success: res => {
+        //         // 可以将 res 发送给后台解码出 unionId
+        //         app.globalData.userInfo = res.userInfo
+        //         this.setData({
+        //             userInfo: app.globalData.userInfo,
+        //             hasUserInfo: true
+        //         })
 
-            }
-        })
+        //     }
+        // })
 
         this.reloadAllCatalogsAudios(this)
     },
@@ -225,12 +225,12 @@ Page({
     },
 
     getUserInfo: function (e) {
-        console.log(e)
-        app.globalData.userInfo = e.detail.userInfo
-        this.setData({
-            userInfo: e.detail.userInfo,
-            hasUserInfo: true
-        })
+        // console.log(e)
+        // app.globalData.userInfo = e.detail.userInfo
+        // this.setData({
+        //     userInfo: e.detail.userInfo,
+        //     hasUserInfo: true
+        // })
     },
 
     pause: function (event) {

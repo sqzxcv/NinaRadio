@@ -1,29 +1,35 @@
 <!--pages/Index/index.wxml-->
 
 <swiper class="swiper_box" indicator-dots="true" bindchange="catalogChanged" current="{{currentShowIndex}}">
-    <block wx:for="{{catalogs}}">
-        <swiper-item class="swiper_item">
-            <view class="container">
-                <view class="userinfo">
-                    <image wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" class="userinfo-avatar" src="/images/logo.jpeg" bindgetuserinfo="getUserInfo"></image>
-                    <block wx:else>
-                        <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-                    </block>
-                    <text class="userinfo-nickname">汇报员</text>
-                </view>
-                <view class="audioInfo">
-                    <text class="catalog-name">- {{item.catalog_name}} -</text>
-                    <text class="audioTitle">{{item.audioInfo.title}}</text>
-                    <view class="control">
-                        <image class="previous_icon" src="/images/previous_icon.png" bindtap='playPreAudio'></image>
-                        <view class='play_icon' >
-                            <image class="play_image" bindtap="play" src='/images/play_icon.png' hidden="{{item.isplaying}}"  data-type="play"  data-index="{{index}}"></image>
-                            <image class="pause_image" bindtap="pause" src='/images/pause_icon.png' hidden="{{!item.isplaying}}"  data-type="pause"  data-index="{{index}}"></image>
-                        </view>
-                        <image class="next_icon" src="/images/next_icon.png" bindtap="playNextAudio"></image>
-                    </view>
-                </view>
+  <block wx:for="{{catalogs}}">
+    <swiper-item class="swiper_item">
+      <view class="container">
+        <view class="userinfo">
+          <image wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" class="userinfo-avatar" src="/images/logo.jpeg" bindgetuserinfo="getUserInfo"></image>
+          <block wx:else>
+            <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+          </block>
+          <text class="userinfo-nickname">科技观察室</text>
+        </view>
+        <view class="audioInfo">
+          <text class="catalog-name">- {{item.catalog_name}} -</text>
+          <text class="audioTitle">{{item.audioInfo.title}}</text>
+          <view class="control">
+            <image class="previous_icon" src="/images/previous_icon.png" bindtap='playPreAudio'></image>
+            <view class='play_icon'>
+              <image class="play_image" bindtap="play" src='/images/play_icon.png' hidden="{{item.isplaying}}" data-type="play" data-index="{{index}}"></image>
+              <image class="pause_image" bindtap="pause" src='/images/pause_icon.png' hidden="{{!item.isplaying}}" data-type="pause" data-index="{{index}}"></image>
             </view>
-        </swiper-item>
-    </block>
+            <image class="next_icon" src="/images/next_icon.png" bindtap="playNextAudio"></image>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+  </block>
 </swiper>
+<view class='tips'>
+  基于数据挖掘和TTS核心技术，即使将互联网最新动态“读”给用户听\n
+  <view >
+    数据挖掘 • TTS • 信息检索
+  </view>
+</view>
