@@ -124,8 +124,10 @@ page {
    margin-top: 1000rpx; 
    text-align: center;
    /* filter: drop-shadow(-1px -1px -1px rgba(0, 0, 0, 0.3)); */
-   text-shadow: 0 1px 0 #ccc; 
+    text-shadow: 0 1px 1 #ccc;  
    font-size: 30rpx;
    font-family:Courier New, Courier, monospace;
-   color: #555
+   color: #555;
+   margin-left: 50rpx;
+   margin-right: 50rpx;
 }
