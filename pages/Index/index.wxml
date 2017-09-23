@@ -9,7 +9,7 @@
                     <block wx:else>
                         <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
                     </block>
-                    <text class="userinfo-nickname">我的电台</text>
+                    <text class="userinfo-nickname">汇报员</text>
                 </view>
                 <view class="audioInfo">
                     <text class="catalog-name">- {{item.catalog_name}} -</text>
