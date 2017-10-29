@@ -1,13 +1,14 @@
 {
-  "pages": [
-    "pages/Index/index",
-    "pages/profile/profile",
-    "pages/logs/logs"
-  ],
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#eee",
-    "navigationBarTitleText": "畅听吧",
-    "navigationBarTextStyle": "black"
-  }
+    "pages": [
+        "pages/list/list",
+        "pages/Index/index",
+        "pages/profile/profile",
+        "pages/logs/logs"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#eee",
+        "navigationBarTitleText": "科技爬虫",
+        "navigationBarTextStyle": "black"
+    }
 }

@@ -9,7 +9,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    audioInfos:null,
-    fetchdataing:false
+    audioInfos: null,
+    fetchdataing: false
   }
 })

@@ -1,0 +1,18 @@
+<!--list.wxml-->
+<view class='header'>
+    <image class='ting' hover-class='hover-ting' src ='http://audio.lila-info.com/lila_logo-green_yuan.png' bindtap="TTSPage"></image>
+    <text class='header_tips'>使用最新 TTS( 语音合成技术)读出所有互联网资讯</text>
+</view>
+<view class='tableview'>
+    <block wx:for="{{messages}}">
+        <view class="message">
+            <image class='thumbnail' src='{{item.image}}' lazy-load='true' background-image='http://audio.lila-info.com/default_news.png'></image>
+            <view class='infomation'>
+                <text class='source'>{{item.source}} : </text>
+                <text class='title'>{{item.title}}</text>
+            </view>
+        </view>
+    </block>
+</view>
+
+<!-- http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl= -->
